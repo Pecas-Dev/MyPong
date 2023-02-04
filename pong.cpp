@@ -27,23 +27,24 @@ struct WindowDimensions
     int height{800};
 
     // WindowColliders
-    int x_min{};
-    int X_MAX{};
+    int x_min{10};
+    int X_MAX{965};
 
-    int y_min{};
-    int Y_MAX{};
+    int y_min{10};
+    int Y_MAX{665};
 };
 
 int main()
 {
     LeftPaddle leftPaddle;
     RightPaddle rightPadle;
+    WindowDimensions windowDimensions;
 
-    int paddlesSpeed = 5;
+    int paddlesSpeed = 10;
 
     int Fps{60};
 
-    InitWindow(1000, 800, "MyPong");
+    InitWindow(windowDimensions.width, windowDimensions.height, "MyPong");
 
     SetTargetFPS(Fps);
 
@@ -58,27 +59,41 @@ int main()
         // LEFT RECTANGLE
         DrawRectangle(leftPaddle.leftPaddle_x, leftPaddle.leftPaddle_y, leftPaddle.leftPaddle_width, leftPaddle.leftPaddle_height, leftPaddle.leftPaddleColor);
 
-        if (IsKeyDown(KEY_UP))
+        // LEFT PADDLE MOVEMENT
+        if (leftPaddle.leftPaddle_y >= windowDimensions.y_min)
         {
-            leftPaddle.leftPaddle_y -= paddlesSpeed;
+            if (IsKeyDown(KEY_UP))
+            {
+                leftPaddle.leftPaddle_y -= paddlesSpeed;
+            }
         }
 
-        if (IsKeyDown(KEY_DOWN))
+        if (leftPaddle.leftPaddle_y <= windowDimensions.Y_MAX)
         {
-            leftPaddle.leftPaddle_y += paddlesSpeed;
+            if (IsKeyDown(KEY_DOWN))
+            {
+                leftPaddle.leftPaddle_y += paddlesSpeed;
+            }
         }
 
         // RIGHT RECTANGLE
         DrawRectangle(rightPadle.rightPaddle_x, rightPadle.rightPaddle_y, rightPadle.rightPaddle_width, rightPadle.rightPaddle_height, rightPadle.rightPaddleColor);
 
-        if (IsKeyDown(KEY_W))
+        // RIGHT PADDLE MOVEMENT
+        if (rightPadle.rightPaddle_y >= windowDimensions.y_min)
         {
-            rightPadle.rightPaddle_y -= paddlesSpeed;
+            if (IsKeyDown(KEY_W))
+            {
+                rightPadle.rightPaddle_y -= paddlesSpeed;
+            }
         }
 
-        if (IsKeyDown(KEY_S))
+        if (rightPadle.rightPaddle_y >= windowDimensions.Y_MAX)
         {
-            rightPadle.rightPaddle_y += paddlesSpeed;
+            if (IsKeyDown(KEY_S))
+            {
+                rightPadle.rightPaddle_y += paddlesSpeed;
+            }
         }
 
         EndDrawing();
