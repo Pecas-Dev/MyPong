@@ -1,4 +1,4 @@
 *.exe
 *.dsym
-*.Makefile
+*Makefile
 main
