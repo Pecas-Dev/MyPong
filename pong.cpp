@@ -39,6 +39,8 @@ int main()
     LeftPaddle leftPaddle;
     RightPaddle rightPadle;
 
+    int paddlesSpeed = 5;
+
     int Fps{60};
 
     InitWindow(1000, 800, "MyPong");
@@ -56,8 +58,28 @@ int main()
         // LEFT RECTANGLE
         DrawRectangle(leftPaddle.leftPaddle_x, leftPaddle.leftPaddle_y, leftPaddle.leftPaddle_width, leftPaddle.leftPaddle_height, leftPaddle.leftPaddleColor);
 
+        if (IsKeyDown(KEY_UP))
+        {
+            leftPaddle.leftPaddle_y -= paddlesSpeed;
+        }
+
+        if (IsKeyDown(KEY_DOWN))
+        {
+            leftPaddle.leftPaddle_y += paddlesSpeed;
+        }
+
         // RIGHT RECTANGLE
         DrawRectangle(rightPadle.rightPaddle_x, rightPadle.rightPaddle_y, rightPadle.rightPaddle_width, rightPadle.rightPaddle_height, rightPadle.rightPaddleColor);
+
+        if (IsKeyDown(KEY_W))
+        {
+            rightPadle.rightPaddle_y -= paddlesSpeed;
+        }
+
+        if (IsKeyDown(KEY_S))
+        {
+            rightPadle.rightPaddle_y += paddlesSpeed;
+        }
 
         EndDrawing();
     }
