@@ -165,8 +165,8 @@ int main()
         // LEFT PADDLE - BALL COLLISION
         if (CheckCollisionCircleRec(Vector2{ball.ball_x, ball.ball_y}, ball.ballRadius, LeftPaddleRec))
         {
-            ballDirectionX = -ballDirectionX;         //"Push" in the opposite direction - LeftPaddle
-            ballDirectionY = distribution(generator); // Randomness offset in the Y axis - LeftPaddle
+            ballDirectionX = -ballDirectionX;               //"Push" in the opposite direction - LeftPaddle
+            ballDirectionY = distribution(generator) * 1.1; // Randomness offset in the Y axis - LeftPaddle
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,8 +203,8 @@ int main()
         // RIGHT PADDLE - BALL COLLISION
         if (CheckCollisionCircleRec(Vector2{ball.ball_x, ball.ball_y}, ball.ballRadius, RightPaddleRec))
         {
-            ballDirectionX = -ballDirectionX;         //"Push" in the opposite direction - RightPaddle
-            ballDirectionY = distribution(generator); // Randomness offset in the Y axis - RightPaddle
+            ballDirectionX = -ballDirectionX;               //"Push" in the opposite direction - RightPaddle
+            ballDirectionY = distribution(generator) * 1.1; // Randomness offset in the Y axis - RightPaddle
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -215,7 +215,7 @@ int main()
         if (ballMoving)
         {
             ball.ball_x += ballSpeed * ballDirectionX;
-            ball.ball_y += ballSpeed * ballDirectionY;
+            ball.ball_y += ballSpeed * ballDirectionY * 1.1;
         }
 
         // BALL MOVEMENT
