@@ -30,7 +30,7 @@ struct LeftPaddle
     int X_MAX{965};
 
     int y_min{10};
-    int Y_MAX{665};
+    int Y_MAX{660};
 };
 
 struct RightPaddle
@@ -54,7 +54,7 @@ struct RightPaddle
     int X_MAX{965};
 
     int y_min{10};
-    int Y_MAX{665};
+    int Y_MAX{660};
 };
 
 struct WindowDimensions
@@ -100,7 +100,7 @@ int main()
     WindowDimensions windowDimensions;
 
     // PADDLES SPEED VARAIABLE DECLARATION
-    float paddlesSpeed = 10;
+    float paddlesSpeed = 15;
 
     // BALL VARIABLES DECLARATION
     float ballSpeed = 6.5;
@@ -114,6 +114,15 @@ int main()
     int scoreLeft = 0;
     int scoreRight = 0;
 
+    // Audio Initialization
+    InitAudioDevice();
+    Sound pointSound = LoadSound("point.mp3");
+    Sound wallSound = LoadSound("wall.mp3");
+    Sound paddleSound = LoadSound("paddle.mp3");
+    Music backgoundMusic = LoadMusicStream("bMusic1.mp3");
+    backgoundMusic.looping = true;
+    PlayMusicStream(backgoundMusic);
+
     int Fps{60};
 
     InitWindow(windowDimensions.width, windowDimensions.height, "MyPong");
@@ -125,11 +134,12 @@ int main()
         // GAME LOGIC STARTS
         BeginDrawing();
         ClearBackground(BLACK);
+        UpdateMusicStream(backgoundMusic);
 
         // Middle line & Score
         DrawRectangle(494, 0, 6, 850, WHITE);
-        DrawText(TextFormat("%d", scoreLeft), 850, 50, 100, RED);
-        DrawText(TextFormat("%d", scoreRight), 100, 50, 100, RED);
+        DrawText(TextFormat("PLAYER 1: %d", scoreLeft), 635, 50, 50, RED);
+        DrawText(TextFormat("PLAYER 2: %d", scoreRight), 50, 50, 50, RED);
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
         // LEFT PADDLE
@@ -167,6 +177,7 @@ int main()
         {
             ballDirectionX = -ballDirectionX * 1.05;         //"Push" in the opposite direction - LeftPaddle
             ballDirectionY = distribution(generator) * 1.15; // Randomness offset in the Y axis - LeftPaddle
+            PlaySound(paddleSound);
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -200,11 +211,12 @@ int main()
             rightPaddle.rightPaddleRec.width,
             rightPaddle.rightPaddleRec.height};
 
-        // RIGHT PADDLE - BALL COLLISION
+        // RIGHT PADDLE - BALL COLLISION - SOUND
         if (CheckCollisionCircleRec(Vector2{ball.ball_x, ball.ball_y}, ball.ballRadius, RightPaddleRec))
         {
             ballDirectionX = -ballDirectionX * 1.05;         //"Push" in the opposite direction - RightPaddle
             ballDirectionY = distribution(generator) * 1.15; // Randomness offset in the Y axis - RightPaddle
+            PlaySound(paddleSound);
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -218,38 +230,58 @@ int main()
             ball.ball_y += ballSpeed * ballDirectionY * 1.15;
         }
 
-        // BALL MOVEMENT
+        // BALL MOVEMENT + SOUND
         if (ball.ball_y <= ball.y_min || ball.ball_y >= ball.Y_MAX)
         {
             ballDirectionY = -ballDirectionY;
+            PlaySound(wallSound);
         }
 
         // BALL INITIAL FORCE
         if (IsKeyPressed(KEY_SPACE) && !ballMoving)
         {
-            ballDirectionX = distribution(generator) * 3; // Offset Inital force in the X-Axis
-            ballDirectionY = distribution(generator) * 3; // Offset Inital force in the Y-Axis
+            ballDirectionX = distribution(generator) * 2.25; // Offset Inital force in the X-Axis
+            ballDirectionY = distribution(generator) * 2.25; // Offset Inital force in the Y-Axis
             ballMoving = true;
         }
 
-        // BALL RESET + LEFT PADDLE SCORE
-        if (ball.ball_x <= ball.x_min)
+        // BALL RESET + LEFT PADDLE SCORE + SOUND
+        if (ball.ball_x <= ball.x_min || IsKeyPressed(KEY_P))
         {
+            PlaySound(pointSound);
             ball.ball_x = ball.ballOriginalPosX;
             ball.ball_y = ball.ballOriginalPosY;
             ballMoving = false;
             scoreLeft++;
         }
 
-        // BALL RESET + RIGHT PADDLE SCORE
-        if (ball.ball_x >= ball.X_MAX)
+        // BALL RESET + RIGHT PADDLE SCORE + SOUND
+        if (ball.ball_x >= ball.X_MAX || IsKeyPressed(KEY_T))
         {
+            PlaySound(pointSound);
             ball.ball_x = ball.ballOriginalPosX;
             ball.ball_y = ball.ballOriginalPosY;
             ballMoving = false;
             scoreRight++;
         }
 
+        // GAME DIFFICULTY INCREASE
+        if ((scoreLeft >= 10 || scoreRight >= 10) && ballMoving)
+        {
+            ballSpeed = 7.0;
+            paddlesSpeed = 18;
+        }
+
+        if (scoreLeft >= 20 || scoreRight >= 20)
+        {
+            ballSpeed = 7.5;
+            paddlesSpeed = 20;
+        }
+        if (scoreLeft >= 30 || scoreRight >= 30)
+        {
+            ballSpeed = 8.5;
+            paddlesSpeed = 23;
+        }
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
         // GAME LOGIC ENDS
         EndDrawing();
