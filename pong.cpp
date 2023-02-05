@@ -233,7 +233,7 @@ int main()
         }
 
         // BALL RESET + LEFT PADDLE SCORE
-        if (ball.ball_x <= ball.x_min_Point)
+        if (ball.ball_x <= ball.x_min)
         {
             ball.ball_x = ball.ballOriginalPosX;
             ball.ball_y = ball.ballOriginalPosY;
@@ -242,7 +242,7 @@ int main()
         }
 
         // BALL RESET + RIGHT PADDLE SCORE
-        if (ball.ball_x >= ball.X_MAX_Point)
+        if (ball.ball_x >= ball.X_MAX)
         {
             ball.ball_x = ball.ballOriginalPosX;
             ball.ball_y = ball.ballOriginalPosY;
