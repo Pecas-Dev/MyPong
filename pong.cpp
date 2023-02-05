@@ -103,7 +103,7 @@ int main()
     float paddlesSpeed = 10;
 
     // BALL VARIABLES DECLARATION
-    float ballSpeed = 5;
+    float ballSpeed = 6.5;
     float ballDirectionX = 1;
     float ballDirectionY = 1;
     bool ballMoving = false;
@@ -165,8 +165,8 @@ int main()
         // LEFT PADDLE - BALL COLLISION
         if (CheckCollisionCircleRec(Vector2{ball.ball_x, ball.ball_y}, ball.ballRadius, LeftPaddleRec))
         {
-            ballDirectionX = -ballDirectionX;               //"Push" in the opposite direction - LeftPaddle
-            ballDirectionY = distribution(generator) * 1.1; // Randomness offset in the Y axis - LeftPaddle
+            ballDirectionX = -ballDirectionX * 1.05;         //"Push" in the opposite direction - LeftPaddle
+            ballDirectionY = distribution(generator) * 1.15; // Randomness offset in the Y axis - LeftPaddle
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,8 +203,8 @@ int main()
         // RIGHT PADDLE - BALL COLLISION
         if (CheckCollisionCircleRec(Vector2{ball.ball_x, ball.ball_y}, ball.ballRadius, RightPaddleRec))
         {
-            ballDirectionX = -ballDirectionX;               //"Push" in the opposite direction - RightPaddle
-            ballDirectionY = distribution(generator) * 1.1; // Randomness offset in the Y axis - RightPaddle
+            ballDirectionX = -ballDirectionX * 1.05;         //"Push" in the opposite direction - RightPaddle
+            ballDirectionY = distribution(generator) * 1.15; // Randomness offset in the Y axis - RightPaddle
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -214,8 +214,8 @@ int main()
         // BALL SPEED - DIRECTION SETTINGS
         if (ballMoving)
         {
-            ball.ball_x += ballSpeed * ballDirectionX;
-            ball.ball_y += ballSpeed * ballDirectionY * 1.1;
+            ball.ball_x += ballSpeed * ballDirectionX * 1.05;
+            ball.ball_y += ballSpeed * ballDirectionY * 1.15;
         }
 
         // BALL MOVEMENT
