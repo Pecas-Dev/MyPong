@@ -1,3 +1,7 @@
+// MyPong Game - 04/02/2023
+
+// By Pecas_Dev
+
 #include "raylib.h"
 #include <iostream>
 #include <random>
@@ -81,25 +85,34 @@ struct Ball
 
     int y_min{30};
     int Y_MAX{770};
+
+    // Point Colliders
+    int x_min_Point{30};
+    int X_MAX_Point{950};
 };
 
 int main()
 {
+    // STRUCTS VARIABLES
     LeftPaddle leftPaddle;
     RightPaddle rightPaddle;
     Ball ball;
     WindowDimensions windowDimensions;
 
+    // PADDLES SPEED VARAIABLE DECLARATION
     float paddlesSpeed = 10;
 
+    // BALL VARIABLES DECLARATION
     float ballSpeed = 5;
     float ballDirectionX = 1;
     float ballDirectionY = 1;
     bool ballMoving = false;
+
     mt19937 generator(time(0));
     uniform_real_distribution<float> distribution(-1.0, 1.0);
 
-    int score = 0;
+    int scoreLeft = 0;
+    int scoreRight = 0;
 
     int Fps{60};
 
@@ -109,15 +122,16 @@ int main()
 
     while (!WindowShouldClose())
     {
+        // GAME LOGIC STARTS
         BeginDrawing();
         ClearBackground(BLACK);
 
-        // Middle line
+        // Middle line & Score
         DrawRectangle(494, 0, 6, 850, WHITE);
-        DrawText(TextFormat("%d", score), 500, 500, 20, RED);
+        DrawText(TextFormat("%d", scoreLeft), 850, 50, 100, RED);
+        DrawText(TextFormat("%d", scoreRight), 100, 50, 100, RED);
 
-        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
         // LEFT PADDLE
         DrawRectangle(leftPaddle.leftPaddle_x, leftPaddle.leftPaddle_y, leftPaddle.leftPaddle_width, leftPaddle.leftPaddle_height, leftPaddle.leftPaddleColor);
 
@@ -139,11 +153,6 @@ int main()
         }
 
         // LEFT PADDLE COLLISION
-        leftPaddle.LeftPoint_X = leftPaddle.leftPaddle_x;
-        leftPaddle.RightPoint_X = leftPaddle.leftPaddle_x + leftPaddle.leftPaddle_width;
-        leftPaddle.UpperPoint_Y = leftPaddle.leftPaddle_y;
-        leftPaddle.BottomPoint_Y = leftPaddle.leftPaddle_y + leftPaddle.leftPaddle_height;
-
         leftPaddle.leftPaddleRec.width = leftPaddle.leftPaddle_width;
         leftPaddle.leftPaddleRec.height = leftPaddle.leftPaddle_height;
 
@@ -153,14 +162,14 @@ int main()
             leftPaddle.leftPaddleRec.width,
             leftPaddle.leftPaddleRec.height};
 
+        // LEFT PADDLE - BALL COLLISION
         if (CheckCollisionCircleRec(Vector2{ball.ball_x, ball.ball_y}, ball.ballRadius, LeftPaddleRec))
         {
-            ballDirectionX = -ballDirectionX;
-            ballDirectionY = distribution(generator);
+            ballDirectionX = -ballDirectionX;         //"Push" in the opposite direction - LeftPaddle
+            ballDirectionY = distribution(generator); // Randomness offset in the Y axis - LeftPaddle
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
         // RIGHT PADDLE
         DrawRectangle(rightPaddle.rightPaddle_x, rightPaddle.rightPaddle_y, rightPaddle.rightPaddle_width, rightPaddle.rightPaddle_height, rightPaddle.rightPaddleColor);
 
@@ -182,11 +191,6 @@ int main()
         }
 
         // RIGHT PADDLE COLLISION
-        rightPaddle.LeftPoint_X = rightPaddle.rightPaddle_x;
-        rightPaddle.RightPoint_X = rightPaddle.rightPaddle_x + rightPaddle.rightPaddle_width;
-        rightPaddle.UpperPoint_Y = rightPaddle.rightPaddle_y;
-        rightPaddle.BottomPoint_Y = rightPaddle.rightPaddle_y + rightPaddle.rightPaddle_height;
-
         rightPaddle.rightPaddleRec.width = rightPaddle.rightPaddle_width;
         rightPaddle.rightPaddleRec.height = rightPaddle.rightPaddle_height;
 
@@ -196,17 +200,18 @@ int main()
             rightPaddle.rightPaddleRec.width,
             rightPaddle.rightPaddleRec.height};
 
+        // RIGHT PADDLE - BALL COLLISION
         if (CheckCollisionCircleRec(Vector2{ball.ball_x, ball.ball_y}, ball.ballRadius, RightPaddleRec))
         {
-            ballDirectionX = -ballDirectionX;
-            ballDirectionY = distribution(generator);
+            ballDirectionX = -ballDirectionX;         //"Push" in the opposite direction - RightPaddle
+            ballDirectionY = distribution(generator); // Randomness offset in the Y axis - RightPaddle
         }
 
-        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
         // BALL LOGIC
         DrawCircle(ball.ball_x, ball.ball_y, ball.ballRadius, ball.ballColor);
 
+        // BALL SPEED - DIRECTION SETTINGS
         if (ballMoving)
         {
             ball.ball_x += ballSpeed * ballDirectionX;
@@ -219,30 +224,34 @@ int main()
             ballDirectionY = -ballDirectionY;
         }
 
+        // BALL INITIAL FORCE
         if (IsKeyPressed(KEY_SPACE) && !ballMoving)
         {
-            ballDirectionX = distribution(generator) * 3;
-            ballDirectionY = distribution(generator) * 3;
+            ballDirectionX = distribution(generator) * 3; // Offset Inital force in the X-Axis
+            ballDirectionY = distribution(generator) * 3; // Offset Inital force in the Y-Axis
             ballMoving = true;
         }
 
-        // BALL RESTART
-        if (ball.ball_x <= ball.x_min || ball.ball_x >= ball.X_MAX || IsKeyPressed(KEY_P))
+        // BALL RESET + LEFT PADDLE SCORE
+        if (ball.ball_x <= ball.x_min_Point)
         {
             ball.ball_x = ball.ballOriginalPosX;
             ball.ball_y = ball.ballOriginalPosY;
             ballMoving = false;
-            score++;
+            scoreLeft++;
         }
 
-        /*POINTS
-         if (ball.ball_x <= ball.x_min || ball.ball_x >= ball.X_MAX)
+        // BALL RESET + RIGHT PADDLE SCORE
+        if (ball.ball_x >= ball.X_MAX_Point)
         {
-            scor
-        }*/
+            ball.ball_x = ball.ballOriginalPosX;
+            ball.ball_y = ball.ballOriginalPosY;
+            ballMoving = false;
+            scoreRight++;
+        }
 
-        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // GAME LOGIC ENDS
         EndDrawing();
     }
 
