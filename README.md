@@ -13,18 +13,19 @@ For downloading and testing the game follow these steps:
 6. To play, double-click in the file called "pong" with the extension .exe; if you don't see the extension locate the file tipe "application" or "executable".
 
 
-Now you can play!
+# Now you can play!
 
 Here are the rules:
 
 -Player 1 (Left-Paddle): "W" key to move up. "S" key to move down.
+
 -Player 2 (Right-Paddle): "Up Arrow" key to move up. "Down Arrow" key to move down.
 
-- To shoot the ball use the "Spacebar" key.
+-To shoot the ball use the "Spacebar" key.
 
-- In case the ball is moving way to slow you can restart the game by using the "P" or the "R" key. If you use the "P" key it will add a point to the Left-Padddle player, and if you use the "R" key it will add a point to the Right-Padddle player.
+-In case the ball is moving way to slow you can restart the game by using the "P" or the "R" key. If you use the "P" key it will add a point to the Left-Padddle player, and if you use the "R" key it will add a point to the Right-Padddle player.
 
-- Every 10 points (no matter the player), the difficulty will increase a little bit; you will notice this given that the paddle speed and the ball speed will increase.
+-Every 10 points (no matter the player), the difficulty will increase a little bit; you will notice this given that the paddle speed and the ball speed will increase.
 
 *NOTE:
 
