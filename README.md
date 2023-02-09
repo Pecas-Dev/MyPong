@@ -1,5 +1,6 @@
 # MyPong
-PONG recreated in C++ by me.
+
+**PONG recreated in C++ by me.**
 
 This short project was made using the "raylib" library. It was made as practice for my videogame programming skills.
 
@@ -15,7 +16,7 @@ For downloading and testing the game follow these steps:
 
 # Now you can play!
 
-Here are the rules:
+**Here are the rules**:
 
 -Player 1 (Left-Paddle): "W" key to move up. "S" key to move down.
 
@@ -29,7 +30,7 @@ Here are the rules:
 
 -------------------------------------------------------------------------------------------------------
 
-*NOTE:
+-**NOTE**:
 
 - You can change the Player names shown in the screen if you edit the pong.cpp file. It is recommended that you use an IDE. Here is how:
  
