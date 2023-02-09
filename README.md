@@ -27,6 +27,8 @@ Here are the rules:
 
 -Every 10 points (no matter the player), the difficulty will increase a little bit; you will notice this given that the paddle speed and the ball speed will increase.
 
+-------------------------------------------------------------------------------------------------------
+
 *NOTE:
 
 - You can change the Player names shown in the screen if you edit the pong.cpp file. It is recommended that you use an IDE. Here is how:
